@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphic Design Principles Flashcards</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .flashcard-container {
+            perspective: 1000px;
+            margin-bottom: 30px;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 400px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            color: white;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #48cae4, #023e8a);
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .card-front h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .card-front .tagline {
+            font-size: 1.5rem;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        .card-back h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-decoration: underline;
+        }
+
+        .card-back p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .card-back .example {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .progress {
+            text-align: center;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .control-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .control-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-1px);
+        }
+
+        .flip-hint {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            margin-top: 15px;
+            font-size: 0.9rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.4; }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .flashcard {
+                height: 350px;
+            }
+            
+            .card-face {
+                padding: 30px;
+            }
+            
+            .card-front h2 {
+                font-size: 2.5rem;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Design Principles</h1>
+            <p>Interactive Flashcards for Graphic Design Fundamentals</p>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" onclick="previousCard()">← Previous</button>
+            <div class="progress">
+                <span id="currentCard">1</span> / <span id="totalCards">9</span>
+            </div>
+            <button class="nav-btn" id="nextBtn" onclick="nextCard()">Next →</button>
+        </div>
+
+        <div class="flashcard-container">
+            <div class="flashcard" id="flashcard" onclick="flipCard()">
+                <div class="card-face card-front">
+                    <h2 id="principleTitle">Contrast</h2>
+                    <div class="tagline" id="principleTagline">Make stuff pop</div>
+                </div>
+                <div class="card-face card-back">
+                    <h3>What is it?</h3>
+                    <p id="principleDefinition">Contrast creates visual interest and draws attention by using opposing elements like light vs. dark, large vs. small, or thick vs. thin.</p>
+                    <div class="example" id="principleExample">
+                        <strong>Example:</strong> A bold black headline on a white background, or mixing a heavy serif font with a light sans-serif font.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="flip-hint">💡 Click the card to flip it and see the explanation!</p>
+
+        <div class="controls">
+            <button class="control-btn" onclick="shuffleCards()">🔀 Shuffle</button>
+            <button class="control-btn" onclick="resetProgress()">🔄 Reset</button>
+            <button class="control-btn" onclick="toggleAutoFlip()">⏰ Auto-flip: <span id="autoFlipStatus">OFF</span></button>
+        </div>
+    </div>
+
+    <script>
+        const principles = [
+            {
+                title: "Contrast",
+                tagline: "Make stuff pop",
+                definition: "Contrast creates visual interest and draws attention by using opposing elements like light vs. dark, large vs. small, or thick vs. thin.",
+                example: "A bold black headline on a white background, or mixing a heavy serif font with a light sans-serif font."
+            },
+            {
+                title: "Repetition",
+                tagline: "Keep it consistent",
+                definition: "Repetition creates unity and consistency by repeating visual elements like colors, fonts, shapes, or spacing throughout your design.",
+                example: "Using the same shade of blue for all headings, or repeating a circular motif in icons, buttons, and decorative elements."
+            },
+            {
+                title: "Alignment",
+                tagline: "Don't just drop things anywhere",
+                definition: "Alignment creates order and connection by lining up elements along invisible lines, making your design feel organized and professional.",
+                example: "Left-aligning all text in a column, or centering a headline above a perfectly centered image block."
+            },
+            {
+                title: "Proximity",
+                tagline: "Group related things together",
+                definition: "Proximity creates relationships by placing related elements close together and separating unrelated elements with space.",
+                example: "Grouping a product image with its title and price, while keeping it separate from other product groups."
+            },
+            {
+                title: "Balance",
+                tagline: "Find that visual stability",
+                definition: "Balance creates stability by distributing visual weight evenly across your design, either symmetrically or asymmetrically.",
+                example: "A large image on the left balanced by several smaller text blocks on the right, or a centered logo with equal margins."
+            },
+            {
+                title: "Emphasis",
+                tagline: "Highlight what matters most",
+                definition: "Emphasis creates focus by making the most important element stand out through size, color, contrast, or positioning.",
+                example: "Making a 'Buy Now' button bright red while keeping other buttons gray, or using a much larger font for the main headline."
+            },
+            {
+                title: "Hierarchy",
+                tagline: "Guide the viewer's eye",
+                definition: "Hierarchy creates a clear path for the eye to follow by organizing information in order of importance through size, color, and placement.",
+                example: "Large headline → medium subheading → smaller body text → tiny footer text, each getting progressively less visual weight."
+            },
+            {
+                title: "White Space",
+                tagline: "Give your design some breathing room",
+                definition: "White space (or negative space) creates clarity and focus by giving elements room to breathe and preventing visual clutter.",
+                example: "Leaving generous margins around text blocks, or using empty space to separate different sections of a webpage."
+            },
+            {
+                title: "Unity",
+                tagline: "Make it feel like one complete piece",
+                definition: "Unity creates cohesion by ensuring all elements work together harmoniously through consistent style, color palette, and theme.",
+                example: "Using the same color scheme, similar fonts, and consistent spacing throughout a multi-page brochure."
+            }
+        ];
+
+        let currentIndex = 0;
+        let isFlipped = false;
+        let autoFlip = false;
+        let autoFlipInterval;
+
+        function updateCard() {
+            const principle = principles[currentIndex];
+            document.getElementById('principleTitle').textContent = principle.title;
+            document.getElementById('principleTagline').textContent = principle.tagline;
+            document.getElementById('principleDefinition').textContent = principle.definition;
+            document.getElementById('principleExample').innerHTML = `<strong>Example:</strong> ${principle.example}`;
+            
+            document.getElementById('currentCard').textContent = currentIndex + 1;
+            document.getElementById('totalCards').textContent = principles.length;
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentIndex === 0;
+            document.getElementById('nextBtn').disabled = currentIndex === principles.length - 1;
+            
+            // Reset flip state
+            if (isFlipped) {
+                flipCard();
+            }
+        }
+
+        function flipCard() {
+            const card = document.getElementById('flashcard');
+            card.classList.toggle('flipped');
+            isFlipped = !isFlipped;
+        }
+
+        function nextCard() {
+            if (currentIndex < principles.length - 1) {
+                currentIndex++;
+                updateCard();
+            }
+        }
+
+        function previousCard() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCard();
+            }
+        }
+
+        function shuffleCards() {
+            // Fisher-Yates shuffle
+            for (let i = principles.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [principles[i], principles[j]] = [principles[j], principles[i]];
+            }
+            currentIndex = 0;
+            updateCard();
+        }
+
+        function resetProgress() {
+            // Reset to original order
+            principles.sort((a, b) => {
+                const order = ["Contrast", "Repetition", "Alignment", "Proximity", "Balance", "Emphasis", "Hierarchy", "White Space", "Unity"];
+                return order.indexOf(a.title) - order.indexOf(b.title);
+            });
+            currentIndex = 0;
+            updateCard();
+        }
+
+        function toggleAutoFlip() {
+            autoFlip = !autoFlip;
+            const status = document.getElementById('autoFlipStatus');
+            
+            if (autoFlip) {
+                status.textContent = 'ON';
+                autoFlipInterval = setInterval(() => {
+                    flipCard();
+                }, 3000);
+            } else {
+                status.textContent = 'OFF';
+                clearInterval(autoFlipInterval);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'ArrowLeft':
+                    previousCard();
+                    break;
+                case 'ArrowRight':
+                    nextCard();
+                    break;
+                case ' ':
+                case 'Enter':
+                    e.preventDefault();
+                    flipCard();
+                    break;
+            }
+        });
+
+        // Initialize
+        updateCard();
+    </script>
+</body>
+</html>
