@@ -5,53 +5,94 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Good vs. Bad Flyer – Design Principles</title>
   <style>
+    :root {
+      --primary: #2c3e50;
+      --accent: #3498db;
+      --bad-bg: #fdecea;
+      --good-bg: #ecf8f6;
+      --tooltip-bg: #333;
+      --tooltip-text: #fff;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background: #f4f4f4;
+      margin: 0;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      background: #f7f9fb;
+      color: var(--primary);
+    }
+
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 2rem;
+      text-align: center;
     }
 
     h1 {
-      text-align: center;
+      margin: 0;
+      font-size: 2rem;
     }
 
-    .toggle-buttons {
+    .controls {
       text-align: center;
-      margin-bottom: 20px;
+      margin: 2rem 0;
     }
 
-    .toggle-buttons button {
-      margin: 0 10px;
-      padding: 10px 20px;
+    .controls button {
+      background: var(--accent);
+      border: none;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      margin: 0 1rem;
+      font-size: 1rem;
+      border-radius: 6px;
       cursor: pointer;
-      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    .controls button:hover {
+      background: #2980b9;
     }
 
     .flyer-container {
       display: flex;
       justify-content: center;
-      gap: 40px;
+      gap: 3rem;
       flex-wrap: wrap;
+      padding: 0 2rem 3rem;
     }
 
     .flyer {
-      width: 300px;
-      min-height: 420px;
-      border: 2px solid #ccc;
-      padding: 20px;
-      background-color: white;
+      width: 320px;
+      min-height: 440px;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
       position: relative;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .bad {
-      background-color: #ffefef;
-      font-family: 'Comic Sans MS', cursive;
     }
 
     .good {
-      background-color: #ffffff;
-      font-family: 'Helvetica', sans-serif;
+      background: var(--good-bg);
+      border-left: 6px solid #2ecc71;
+    }
+
+    .bad {
+      background: var(--bad-bg);
+      border-left: 6px solid #e74c3c;
+      font-family: 'Comic Sans MS', cursive;
+    }
+
+    .flyer h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .flyer p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin: 0.5rem 0;
     }
 
     .hidden {
@@ -66,56 +107,61 @@
     .tooltip::after {
       content: attr(data-tip);
       position: absolute;
-      bottom: 100%;
-      left: 0;
-      background-color: #333;
-      color: #fff;
-      padding: 6px 10px;
-      font-size: 12px;
+      bottom: 110%;
+      left: 50%;
+      transform: translateX(-50%) translateY(0);
+      background-color: var(--tooltip-bg);
+      color: var(--tooltip-text);
+      padding: 8px 10px;
+      border-radius: 5px;
+      font-size: 0.75rem;
       white-space: nowrap;
-      border-radius: 4px;
       opacity: 0;
-      transform: translateY(10px);
       pointer-events: none;
-      transition: all 0.3s ease;
-      z-index: 5;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 10;
     }
 
     .tooltip:hover::after {
       opacity: 1;
-      transform: translateY(-5px);
+      transform: translateX(-50%) translateY(-5px);
     }
   </style>
 </head>
 <body>
 
-  <h1>Flyer Design: Good vs. Bad Example</h1>
+  <header>
+    <h1>Design Principles: Good vs. Bad Flyer</h1>
+    <p>Compare the use of design principles like contrast, hierarchy, and alignment</p>
+  </header>
 
-  <div class="toggle-buttons">
+  <div class="controls">
     <button onclick="showFlyer('good')">Show Good Flyer</button>
     <button onclick="showFlyer('bad')">Show Bad Flyer</button>
   </div>
 
   <div class="flyer-container">
+    <!-- Good Flyer -->
     <div id="goodFlyer" class="flyer good hidden">
-      <h2 class="tooltip" data-tip="Good use of hierarchy: The title is large and centered for impact.">Campus Movie Night</h2>
-      <p class="tooltip" data-tip="Good alignment and proximity: Time and place are grouped and easy to read.">
-        Friday, October 6<br>7:00 PM | Student Union
+      <h2 class="tooltip" data-tip="Good hierarchy: clear and centered headline.">Campus Movie Night</h2>
+      <p class="tooltip" data-tip="Grouped and aligned info improves clarity.">
+        Friday, October 6<br>7:00 PM · Student Union Theater
       </p>
-      <p class="tooltip" data-tip="Balanced spacing and clear communication of purpose.">
+      <p class="tooltip" data-tip="Effective use of white space and emphasis.">
         Join us for a free screening of a classic comedy! Popcorn provided. Bring friends!
       </p>
-      <p class="tooltip" data-tip="Low contrast text for less important information, maintaining hierarchy.">
-        Hosted by Student Activities Council
+      <p class="tooltip" data-tip="Lower contrast for less important info maintains focus.">
+        Hosted by the Student Activities Council
       </p>
     </div>
 
+    <!-- Bad Flyer -->
     <div id="badFlyer" class="flyer bad hidden">
-      <h2 class="tooltip" data-tip="Overuse of punctuation and no clear hierarchy.">MOVIE NIGHT!!!</h2>
-      <p class="tooltip" data-tip="No alignment or context. Key info is vague and unorganized.">Come to a movie. It's at 7.</p>
-      <p class="tooltip" data-tip="Poor grouping and unclear layout.">Friday, Oct 6, SU building</p>
-      <p class="tooltip" data-tip="Too many short, scattered phrases. No hierarchy or flow.">Fun. Popcorn. Comedy. Free. Cool.</p>
-      <p class="tooltip" data-tip="No emphasis or visual separation from other info.">student thing</p>
+      <h2 class="tooltip" data-tip="Poor typography and exaggerated punctuation.">MOVIE NIGHT!!!</h2>
+      <p class="tooltip" data-tip="Information is vague and lacks clarity.">Come to a movie. It's at 7.</p>
+      <p class="tooltip" data-tip="No alignment or visual structure.">Friday, Oct 6, SU building</p>
+      <p class="tooltip" data-tip="Random words with no focus or hierarchy.">Fun. Popcorn. Comedy. Free. Cool.</p>
+      <p class="tooltip" data-tip="Missing context and visual emphasis.">student thing</p>
     </div>
   </div>
 
