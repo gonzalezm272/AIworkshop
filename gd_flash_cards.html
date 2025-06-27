@@ -22,7 +22,7 @@
         }
 
         .container {
-            max-width: 600px;
+            max-width: 700px;
             width: 100%;
         }
 
@@ -50,7 +50,7 @@
 
         .flashcard {
             width: 100%;
-            height: 400px;
+            height: 500px;
             position: relative;
             transform-style: preserve-3d;
             transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
@@ -72,7 +72,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 40px;
+            padding: 30px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
         }
@@ -86,6 +86,7 @@
             background: linear-gradient(135deg, #48cae4, #023e8a);
             color: white;
             transform: rotateY(180deg);
+            padding: 20px;
         }
 
         .card-front h2 {
@@ -101,23 +102,30 @@
         }
 
         .card-back h3 {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
             text-decoration: underline;
         }
 
         .card-back p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 15px;
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
         }
 
-        .card-back .example {
-            background: rgba(255,255,255,0.1);
-            padding: 15px;
+        .visual-example {
+            background: rgba(255,255,255,0.95);
             border-radius: 10px;
-            margin-top: 15px;
-            font-style: italic;
+            padding: 20px;
+            margin: 15px 0;
+            width: 100%;
+            max-width: 400px;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
 
         .navigation {
@@ -193,17 +201,203 @@
             50% { opacity: 0.4; }
         }
 
+        /* Visual Example Styles */
+        .contrast-example {
+            background: linear-gradient(45deg, #000 50%, #fff 50%);
+            color: #fff;
+            font-weight: bold;
+            font-size: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .repetition-example {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 100%;
+        }
+
+        .repeat-item {
+            background: #3498db;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .alignment-example {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+            gap: 10px;
+        }
+
+        .align-item {
+            background: #e74c3c;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .proximity-example {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            align-items: center;
+        }
+
+        .group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .group-item {
+            width: 30px;
+            height: 30px;
+            background: #9b59b6;
+            border-radius: 3px;
+        }
+
+        .balance-example {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .balance-left {
+            width: 100px;
+            height: 100px;
+            background: #f39c12;
+            border-radius: 10px;
+        }
+
+        .balance-right {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .balance-small {
+            width: 40px;
+            height: 20px;
+            background: #f39c12;
+            border-radius: 3px;
+        }
+
+        .emphasis-example {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .emphasis-normal {
+            width: 40px;
+            height: 40px;
+            background: #95a5a6;
+            border-radius: 50%;
+        }
+
+        .emphasis-highlighted {
+            width: 80px;
+            height: 80px;
+            background: #e74c3c;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(231, 76, 60, 0.5);
+        }
+
+        .hierarchy-example {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .hierarchy-item {
+            background: #34495e;
+            color: white;
+            padding: 8px;
+            border-radius: 3px;
+            text-align: center;
+        }
+
+        .h1 { font-size: 1.5rem; width: 200px; }
+        .h2 { font-size: 1.2rem; width: 160px; }
+        .h3 { font-size: 1rem; width: 120px; }
+        .h4 { font-size: 0.8rem; width: 80px; }
+
+        .whitespace-example {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            height: 100%;
+        }
+
+        .cramped {
+            width: 45%;
+            background: #e67e22;
+            padding: 5px;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .spacious {
+            width: 45%;
+            background: #27ae60;
+            padding: 20px;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .content-block {
+            background: rgba(255,255,255,0.3);
+            height: 20px;
+            border-radius: 2px;
+        }
+
+        .unity-example {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            width: 100%;
+        }
+
+        .unity-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
         @media (max-width: 768px) {
+            .container {
+                max-width: 100%;
+            }
+            
             .header h1 {
                 font-size: 2rem;
             }
             
             .flashcard {
-                height: 350px;
+                height: 450px;
             }
             
             .card-face {
-                padding: 30px;
+                padding: 20px;
             }
             
             .card-front h2 {
@@ -214,6 +408,10 @@
                 flex-direction: column;
                 gap: 15px;
             }
+            
+            .visual-example {
+                min-height: 150px;
+            }
         }
     </style>
 </head>
@@ -221,7 +419,7 @@
     <div class="container">
         <div class="header">
             <h1>Design Principles</h1>
-            <p>Interactive Flashcards for Graphic Design Fundamentals</p>
+            <p>Interactive Flashcards with Visual Examples</p>
         </div>
 
         <div class="navigation">
@@ -240,15 +438,15 @@
                 </div>
                 <div class="card-face card-back">
                     <h3>What is it?</h3>
-                    <p id="principleDefinition">Contrast creates visual interest and draws attention by using opposing elements like light vs. dark, large vs. small, or thick vs. thin.</p>
-                    <div class="example" id="principleExample">
-                        <strong>Example:</strong> A bold black headline on a white background, or mixing a heavy serif font with a light sans-serif font.
+                    <p id="principleDefinition">Contrast creates visual interest and draws attention by using opposing elements.</p>
+                    <div class="visual-example" id="visualExample">
+                        <div class="contrast-example">BOLD vs thin</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <p class="flip-hint">💡 Click the card to flip it and see the explanation!</p>
+        <p class="flip-hint">💡 Click the card to flip it and see the visual example!</p>
 
         <div class="controls">
             <button class="control-btn" onclick="shuffleCards()">🔀 Shuffle</button>
@@ -263,55 +461,115 @@
                 title: "Contrast",
                 tagline: "Make stuff pop",
                 definition: "Contrast creates visual interest and draws attention by using opposing elements like light vs. dark, large vs. small, or thick vs. thin.",
-                example: "A bold black headline on a white background, or mixing a heavy serif font with a light sans-serif font."
+                visualHTML: '<div class="contrast-example">BOLD vs thin</div>'
             },
             {
                 title: "Repetition",
                 tagline: "Keep it consistent",
                 definition: "Repetition creates unity and consistency by repeating visual elements like colors, fonts, shapes, or spacing throughout your design.",
-                example: "Using the same shade of blue for all headings, or repeating a circular motif in icons, buttons, and decorative elements."
+                visualHTML: `<div class="repetition-example">
+                    <div class="repeat-item">●</div>
+                    <div class="repeat-item">●</div>
+                    <div class="repeat-item">●</div>
+                    <div class="repeat-item">●</div>
+                    <div class="repeat-item">●</div>
+                    <div class="repeat-item">●</div>
+                </div>`
             },
             {
                 title: "Alignment",
                 tagline: "Don't just drop things anywhere",
                 definition: "Alignment creates order and connection by lining up elements along invisible lines, making your design feel organized and professional.",
-                example: "Left-aligning all text in a column, or centering a headline above a perfectly centered image block."
+                visualHTML: `<div class="alignment-example">
+                    <div class="align-item">Header Text</div>
+                    <div class="align-item">Subheading</div>
+                    <div class="align-item">Body content aligned</div>
+                    <div class="align-item">Footer info</div>
+                </div>`
             },
             {
                 title: "Proximity",
                 tagline: "Group related things together",
                 definition: "Proximity creates relationships by placing related elements close together and separating unrelated elements with space.",
-                example: "Grouping a product image with its title and price, while keeping it separate from other product groups."
+                visualHTML: `<div class="proximity-example">
+                    <div class="group">
+                        <div class="group-item"></div>
+                        <div class="group-item"></div>
+                        <div class="group-item"></div>
+                    </div>
+                    <div class="group">
+                        <div class="group-item"></div>
+                        <div class="group-item"></div>
+                        <div class="group-item"></div>
+                    </div>
+                </div>`
             },
             {
                 title: "Balance",
                 tagline: "Find that visual stability",
                 definition: "Balance creates stability by distributing visual weight evenly across your design, either symmetrically or asymmetrically.",
-                example: "A large image on the left balanced by several smaller text blocks on the right, or a centered logo with equal margins."
+                visualHTML: `<div class="balance-example">
+                    <div class="balance-left"></div>
+                    <div class="balance-right">
+                        <div class="balance-small"></div>
+                        <div class="balance-small"></div>
+                        <div class="balance-small"></div>
+                        <div class="balance-small"></div>
+                    </div>
+                </div>`
             },
             {
                 title: "Emphasis",
                 tagline: "Highlight what matters most",
                 definition: "Emphasis creates focus by making the most important element stand out through size, color, contrast, or positioning.",
-                example: "Making a 'Buy Now' button bright red while keeping other buttons gray, or using a much larger font for the main headline."
+                visualHTML: `<div class="emphasis-example">
+                    <div class="emphasis-normal"></div>
+                    <div class="emphasis-normal"></div>
+                    <div class="emphasis-highlighted"></div>
+                    <div class="emphasis-normal"></div>
+                    <div class="emphasis-normal"></div>
+                </div>`
             },
             {
                 title: "Hierarchy",
                 tagline: "Guide the viewer's eye",
                 definition: "Hierarchy creates a clear path for the eye to follow by organizing information in order of importance through size, color, and placement.",
-                example: "Large headline → medium subheading → smaller body text → tiny footer text, each getting progressively less visual weight."
+                visualHTML: `<div class="hierarchy-example">
+                    <div class="hierarchy-item h1">Main Headline</div>
+                    <div class="hierarchy-item h2">Subheading</div>
+                    <div class="hierarchy-item h3">Section Title</div>
+                    <div class="hierarchy-item h4">Detail</div>
+                </div>`
             },
             {
                 title: "White Space",
                 tagline: "Give your design some breathing room",
                 definition: "White space (or negative space) creates clarity and focus by giving elements room to breathe and preventing visual clutter.",
-                example: "Leaving generous margins around text blocks, or using empty space to separate different sections of a webpage."
+                visualHTML: `<div class="whitespace-example">
+                    <div class="cramped">
+                        <div class="content-block"></div>
+                        <div class="content-block"></div>
+                        <div class="content-block"></div>
+                        <div class="content-block"></div>
+                        <div class="content-block"></div>
+                    </div>
+                    <div class="spacious">
+                        <div class="content-block"></div>
+                        <div class="content-block"></div>
+                        <div class="content-block"></div>
+                    </div>
+                </div>`
             },
             {
                 title: "Unity",
                 tagline: "Make it feel like one complete piece",
                 definition: "Unity creates cohesion by ensuring all elements work together harmoniously through consistent style, color palette, and theme.",
-                example: "Using the same color scheme, similar fonts, and consistent spacing throughout a multi-page brochure."
+                visualHTML: `<div class="unity-example">
+                    <div class="unity-card">Card 1<br>Same Style</div>
+                    <div class="unity-card">Card 2<br>Same Colors</div>
+                    <div class="unity-card">Card 3<br>Same Theme</div>
+                    <div class="unity-card">Card 4<br>Unified Look</div>
+                </div>`
             }
         ];
 
@@ -325,7 +583,7 @@
             document.getElementById('principleTitle').textContent = principle.title;
             document.getElementById('principleTagline').textContent = principle.tagline;
             document.getElementById('principleDefinition').textContent = principle.definition;
-            document.getElementById('principleExample').innerHTML = `<strong>Example:</strong> ${principle.example}`;
+            document.getElementById('visualExample').innerHTML = principle.visualHTML;
             
             document.getElementById('currentCard').textContent = currentIndex + 1;
             document.getElementById('totalCards').textContent = principles.length;
@@ -388,7 +646,7 @@
                 status.textContent = 'ON';
                 autoFlipInterval = setInterval(() => {
                     flipCard();
-                }, 3000);
+                }, 4000);
             } else {
                 status.textContent = 'OFF';
                 clearInterval(autoFlipInterval);
