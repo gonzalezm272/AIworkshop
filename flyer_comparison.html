@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Good vs. Bad Flyer – Design Principles</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .toggle-buttons {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .toggle-buttons button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .flyer-container {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .flyer {
+      width: 300px;
+      min-height: 420px;
+      border: 2px solid #ccc;
+      padding: 20px;
+      background-color: white;
+      position: relative;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .bad {
+      background-color: #ffefef;
+      font-family: 'Comic Sans MS', cursive;
+    }
+
+    .good {
+      background-color: #ffffff;
+      font-family: 'Helvetica', sans-serif;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .tooltip {
+      position: relative;
+      cursor: help;
+    }
+
+    .tooltip::after {
+      content: attr(data-tip);
+      position: absolute;
+      bottom: 100%;
+      left: 0;
+      background-color: #333;
+      color: #fff;
+      padding: 6px 10px;
+      font-size: 12px;
+      white-space: nowrap;
+      border-radius: 4px;
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: all 0.3s ease;
+      z-index: 5;
+    }
+
+    .tooltip:hover::after {
+      opacity: 1;
+      transform: translateY(-5px);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Flyer Design: Good vs. Bad Example</h1>
+
+  <div class="toggle-buttons">
+    <button onclick="showFlyer('good')">Show Good Flyer</button>
+    <button onclick="showFlyer('bad')">Show Bad Flyer</button>
+  </div>
+
+  <div class="flyer-container">
+    <div id="goodFlyer" class="flyer good hidden">
+      <h2 class="tooltip" data-tip="Good use of hierarchy: The title is large and centered for impact.">Campus Movie Night</h2>
+      <p class="tooltip" data-tip="Good alignment and proximity: Time and place are grouped and easy to read.">
+        Friday, October 6<br>7:00 PM | Student Union
+      </p>
+      <p class="tooltip" data-tip="Balanced spacing and clear communication of purpose.">
+        Join us for a free screening of a classic comedy! Popcorn provided. Bring friends!
+      </p>
+      <p class="tooltip" data-tip="Low contrast text for less important information, maintaining hierarchy.">
+        Hosted by Student Activities Council
+      </p>
+    </div>
+
+    <div id="badFlyer" class="flyer bad hidden">
+      <h2 class="tooltip" data-tip="Overuse of punctuation and no clear hierarchy.">MOVIE NIGHT!!!</h2>
+      <p class="tooltip" data-tip="No alignment or context. Key info is vague and unorganized.">Come to a movie. It's at 7.</p>
+      <p class="tooltip" data-tip="Poor grouping and unclear layout.">Friday, Oct 6, SU building</p>
+      <p class="tooltip" data-tip="Too many short, scattered phrases. No hierarchy or flow.">Fun. Popcorn. Comedy. Free. Cool.</p>
+      <p class="tooltip" data-tip="No emphasis or visual separation from other info.">student thing</p>
+    </div>
+  </div>
+
+  <script>
+    function showFlyer(type) {
+      document.getElementById('goodFlyer').classList.add('hidden');
+      document.getElementById('badFlyer').classList.add('hidden');
+      document.getElementById(type + 'Flyer').classList.remove('hidden');
+    }
+  </script>
+
+</body>
+</html>
