@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outbreak Analyzer: Classify the Spread</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #c0392b;
+            --light: #ecf0f1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Learning Section */
+        .learning-module {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .def-card {
+            flex: 1;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            min-width: 200px;
+            border-top: 5px solid #ccc;
+        }
+
+        .def-endemic { border-color: var(--success); }
+        .def-epidemic { border-color: var(--warning); }
+        .def-pandemic { border-color: var(--danger); }
+
+        .def-card h3 { margin-top: 0; }
+
+        /* Tool Section */
+        #app-interface {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .progress-bar {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--accent);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .scenario-box {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .scenario-context {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: transform 0.1s;
+            color: white;
+        }
+
+        button:hover { transform: scale(1.05); }
+        button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        .btn-endemic { background-color: var(--success); }
+        .btn-epidemic { background-color: var(--warning); }
+        .btn-pandemic { background-color: var(--danger); }
+        .btn-next { background-color: var(--primary); display: none; margin: 0 auto; }
+
+        #feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .correct { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .incorrect { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+        /* Results Screen */
+        #results {
+            display: none;
+            text-align: center;
+        }
+
+        .score-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Outbreak Analyzer</h1>
+    <p>Epidemiology Training Module 1.0</p>
+</header>
+
+<div class="container">
+    <div class="learning-module">
+        <div class="def-card def-endemic">
+            <h3>Endemic</h3>
+            <p><strong>Constant Presence</strong></p>
+            <p>A disease regularly found among particular people or in a certain area. It is expected and "baseline."</p>
+        </div>
+        <div class="def-card def-epidemic">
+            <h3>Epidemic</h3>
+            <p><strong>Sudden Surge</strong></p>
+            <p>A widespread occurrence of an infectious disease in a community at a particular time, exceeding expectations.</p>
+        </div>
+        <div class="def-card def-pandemic">
+            <h3>Pandemic</h3>
+            <p><strong>Global Spread</strong></p>
+            <p>An epidemic that has spread across multiple countries or continents, affecting a large number of people.</p>
+        </div>
+    </div>
+
+    <div id="app-interface">
+        <div id="quiz-area">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+            
+            <h2 id="scenario-title">Scenario 1</h2>
+            <p class="scenario-context" id="scenario-desc">Loading scenario...</p>
+
+            <div class="btn-group">
+                <button class="btn-endemic" onclick="checkAnswer('Endemic')">Endemic</button>
+                <button class="btn-epidemic" onclick="checkAnswer('Epidemic')">Epidemic</button>
+                <button class="btn-pandemic" onclick="checkAnswer('Pandemic')">Pandemic</button>
+            </div>
+
+            <div id="feedback"></div>
+            <button class="btn-next" id="next-btn" onclick="nextQuestion()">Next Scenario</button>
+        </div>
+
+        <div id="results">
+            <h2>Analysis Complete</h2>
+            <p>Your expert accuracy score:</p>
+            <div class="score-display" id="final-score">0/10</div>
+            <p id="score-msg"></p>
+            <button class="btn-next" style="display:inline-block;" onclick="location.reload()">Restart Simulation</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Data: 10 Scenarios
+    const scenarios = [
+        {
+            id: 1,
+            title: "Malaria in Sub-Saharan Africa",
+            desc: "In many tropical regions of Africa, Malaria is constantly present. Health systems expect a certain number of cases every year, and the virus never disappears completely from the population.",
+            type: "Endemic",
+            explanation: "Because the disease is permanently present in this specific region and cases are expected, it is Endemic."
+        },
+        {
+            id: 2,
+            title: "COVID-19 (2020)",
+            desc: "A novel coronavirus emerged in late 2019. Within months, it had spread to every continent on Earth, overwhelming healthcare systems globally.",
+            type: "Pandemic",
+            explanation: "The virus spread across international borders affecting the entire globe, classifying it as a Pandemic."
+        },
+        {
+            id: 3,
+            title: "Ebola Outbreak (West Africa 2014)",
+            desc: "Ebola cases suddenly spiked in Guinea, Liberia, and Sierra Leone. The case count was far higher than normal, but the spread was largely contained to this specific region of West Africa.",
+            type: "Epidemic",
+            explanation: "This was a sudden, unexpected surge in cases in a specific region, making it an Epidemic."
+        },
+        {
+            id: 4,
+            title: "Spanish Flu (1918)",
+            desc: "An influenza strain spread worldwide, infecting one-third of the Earth's population and causing deaths in almost every country.",
+            type: "Pandemic",
+            explanation: "The worldwide reach and massive infection rate define this as a historical Pandemic."
+        },
+        {
+            id: 5,
+            title: "Chickenpox in the UK (Pre-Vaccine)",
+            desc: "Before the vaccine, Chickenpox was constantly circulating in the UK population. It was always around, especially in schools, at predictable levels.",
+            type: "Endemic",
+            explanation: "Constant circulation within a specific population at predictable levels is the definition of Endemic."
+        },
+        {
+            id: 6,
+            title: "H1N1 'Swine Flu' (2009)",
+            desc: "A new strain of influenza was detected in Mexico and quickly spread to over 214 countries and territories within a single year.",
+            type: "Pandemic",
+            explanation: "Because it crossed international borders rapidly and affected countries globally, it was declared a Pandemic."
+        },
+        {
+            id: 7,
+            title: "Seasonal Flu in Winter",
+            desc: "Every winter in North America, influenza cases spike significantly compared to summer, but this spike happens every single year and is expected.",
+            type: "Endemic",
+            explanation: "While it behaves like a mini-epidemic (surge), because the pattern is constant, predictable, and returns every year to that population, it is technically a seasonal Endemic disease (hyperendemic)."
+        },
+        {
+            id: 8,
+            title: "Zika Virus in Brazil (2015)",
+            desc: "Brazil saw a massive, sudden increase in Zika cases and associated birth defects. While it eventually reached other countries, the massive surge centered in Brazil was the primary crisis.",
+            type: "Epidemic",
+            explanation: "This was a sudden outbreak where case numbers rose sharply above the baseline for that region."
+        },
+        {
+            id: 9,
+            title: "HIV/AIDS (1980s-Present)",
+            desc: "Since its emergence, this virus has spread to every country in the world. While now manageable, it remains a global health issue affecting millions across all continents.",
+            type: "Pandemic",
+            explanation: "Due to its active presence and spread across the entire globe, HIV is considered a Pandemic (sometimes referred to as a global epidemic)."
+        },
+        {
+            id: 10,
+            title: "Cholera in Haiti (2010)",
+            desc: "Following a massive earthquake, cholera (which had not been in the country for decades) suddenly appeared and infected hundreds of thousands of people in Haiti.",
+            type: "Epidemic",
+            explanation: "This was a sudden, unexpected outbreak in a specific area where the disease was not previously present."
+        }
+    ];
+
+    // State Management
+    let currentIdx = 0;
+    let score = 0;
+
+    // DOM Elements
+    const titleEl = document.getElementById('scenario-title');
+    const descEl = document.getElementById('scenario-desc');
+    const feedbackEl = document.getElementById('feedback');
+    const nextBtn = document.getElementById('next-btn');
+    const progressFill = document.getElementById('progress');
+    const quizArea = document.getElementById('quiz-area');
+    const resultArea = document.getElementById('results');
+    const finalScoreEl = document.getElementById('final-score');
+    const scoreMsg = document.getElementById('score-msg');
+    const buttons = document.querySelectorAll('.btn-group button');
+
+    // Initialize
+    function loadScenario() {
+        const s = scenarios[currentIdx];
+        titleEl.textContent = `Scenario ${currentIdx + 1}: ${s.title}`;
+        descEl.textContent = s.desc;
+        feedbackEl.style.display = 'none';
+        feedbackEl.className = '';
+        nextBtn.style.display = 'none';
+        
+        // Enable buttons
+        buttons.forEach(btn => btn.disabled = false);
+        
+        // Update Progress
+        const pct = ((currentIdx) / scenarios.length) * 100;
+        progressFill.style.width = `${pct}%`;
+    }
+
+    function checkAnswer(userChoice) {
+        const s = scenarios[currentIdx];
+        const isCorrect = userChoice === s.type;
+        
+        // Disable buttons so user can't guess again
+        buttons.forEach(btn => btn.disabled = true);
+
+        feedbackEl.style.display = 'block';
+        
+        if(isCorrect) {
+            score++;
+            feedbackEl.innerHTML = `<strong>Correct!</strong> ${s.explanation}`;
+            feedbackEl.classList.add('correct');
+        } else {
+            feedbackEl.innerHTML = `<strong>Incorrect.</strong> The correct answer is <strong>${s.type}</strong>. <br>${s.explanation}`;
+            feedbackEl.classList.add('incorrect');
+        }
+
+        nextBtn.style.display = 'block';
+    }
+
+    function nextQuestion() {
+        currentIdx++;
+        if (currentIdx < scenarios.length) {
+            loadScenario();
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        quizArea.style.display = 'none';
+        resultArea.style.display = 'block';
+        finalScoreEl.textContent = `${score} / 10`;
+        progressFill.style.width = `100%`;
+
+        if(score === 10) {
+            scoreMsg.textContent = "Perfect! You are a Master Epidemiologist.";
+        } else if (score >= 7) {
+            scoreMsg.textContent = "Great job! You understand the core concepts well.";
+        } else {
+            scoreMsg.textContent = "Good effort. Review the definitions and try again!";
+        }
+    }
+
+    // Start
+    loadScenario();
+
+</script>
+
+</body>
+</html>
